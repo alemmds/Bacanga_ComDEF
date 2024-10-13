@@ -1,21 +1,44 @@
 {
-  "name": "Panificadora Bacanga",
-  "short_name": "Bacanga",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#8b4513",
-  "description": "Gerenciamento de pedidos de lanches na Panificadora Bacanga.",
-  "icons": [
-    {
-      "src": "icons/icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-large.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "name": "Panificadora Bacanga",
+    "short_name": "Bacanga",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#f4f4f4",
+    "theme_color": "#8b4513",
+    "description": "Aplicativo para gerenciamento de pedidos da Panificadora Bacanga.",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icon-large.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon-48x48.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "favicon.ico",
+            "sizes": "64x64",
+            "type": "image/x-icon"
+        }
+    ],
+    "orientation": "portrait",
+    "scope": "/",
+    "lang": "pt-BR"
 }
