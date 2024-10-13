@@ -1,85 +1,55 @@
-/* Estilo geral do corpo */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    color: #333;
     margin: 0;
     padding: 20px;
 }
 
-/* Estilo do cabeçalho */
 header {
-    text-align: center;
-    margin-bottom: 20px;
     background-color: #8b4513;
     color: white;
+    text-align: center;
     padding: 20px 0;
 }
 
-/* Estilo para a logo */
-.logo {
-    display: block;
-    margin: 0 auto;
-    max-width: 80px;
-}
-
-/* Estilo do título */
 h1 {
-    font-size: 24px;
-    margin-top: 10px;
-}
-
-/* Estilo dos botões */
-button {
-    background-color: #8b4513;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #6a3510;
-}
-
-/* Estilo dos pedidos */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #8b4513;
-    color: white;
-}
-
-/* Estilo do formulário */
-#pedido-area {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    margin-top: 20px;
-    border-radius: 5px;
-}
-
-input, select {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: 0;
 }
 
 h2 {
     color: #8b4513;
+}
+
+button {
+    background-color: #8b4513;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #a0522d;
+}
+
+#mesa-section, #pedido-section, #pedidos-section {
+    margin-bottom: 30px;
+}
+
+#pedidos-section {
+    border-top: 2px solid #8b4513;
+    padding-top: 20px;
+}
+
+#pedidos h3 {
+    color: #8b4513;
+}
+
+#pedidos p {
+    margin: 5px 0;
+}
+
+strong {
+    font-size: 1.2em;
 }
