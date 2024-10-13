@@ -1,0 +1,21 @@
+{
+  "name": "Panificadora Bacanga",
+  "short_name": "Bacanga",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8b4513",
+  "description": "Gerenciamento de pedidos de lanches na Panificadora Bacanga.",
+  "icons": [
+    {
+      "src": "icons/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-large.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
