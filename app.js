@@ -1,101 +1,106 @@
-// Dados das mesas
-const mesas = {
-  1: { total: 0, pedidos: [] },
-  2: { total: 0, pedidos: [] },
-  3: { total: 0, pedidos: [] },
-  4: { total: 0, pedidos: [] },
-  5: { total: 0, pedidos: [] }
-};
+// app.js
 
-let mesaSelecionada = null;
+let tables = []; // Array para armazenar as mesas
+let orders = []; // Array para armazenar os pedidos
 
-// Função para selecionar a mesa
-function selecionarMesa(mesa) {
-  mesaSelecionada = mesa;
-  document.getElementById('mesa-selecionada').innerText = `Mesa Selecionada: ${mesa}`;
-  atualizarPedidos();
+document.getElementById('add-table').addEventListener('click', addTable);
+document.getElementById('confirm-order').addEventListener('click', confirmOrder);
+
+function addTable() {
+    const tableCount = tables.length + 1;
+    if (tableCount <= 5) {
+        tables.push(tableCount);
+        const option = document.createElement('option');
+        option.value = tableCount;
+        option.textContent = `Mesa ${tableCount}`;
+        document.getElementById('mesa-select').appendChild(option);
+        document.getElementById('pedido-area').style.display = 'block'; // Mostrar a área de pedidos
+    } else {
+        alert('Número máximo de mesas atingido!');
+    }
 }
 
-// Função para adicionar pedido
-function adicionarPedido() {
-  const nome = document.getElementById('nome-lanche').value;
-  const valor = parseFloat(document.getElementById('valor-lanche').value);
+function confirmOrder() {
+    const mesaSelect = document.getElementById('mesa-select');
+    const itemName = document.getElementById('item-name').value;
+    const itemValue = parseFloat(document.getElementById('item-value').value);
+    const mesaNumber = mesaSelect.value;
 
-  if (!mesaSelecionada) {
-    alert("Selecione uma mesa antes de adicionar o pedido!");
-    return;
-  }
+    if (mesaNumber && itemName && !isNaN(itemValue) && itemValue > 0) {
+        const order = {
+            mesa: mesaNumber,
+            name: itemName,
+            value: itemValue
+        };
 
-  if (nome && !isNaN(valor)) {
-    mesas[mesaSelecionada].pedidos.push({ nome, valor });
-    mesas[mesaSelecionada].total += valor;
-    atualizarPedidos();
-    document.getElementById('nome-lanche').value = '';
-    document.getElementById('valor-lanche').value = '';
-  } else {
-    alert("Preencha corretamente os campos de nome e valor.");
-  }
+        // Adiciona o pedido ao array de pedidos
+        orders.push(order);
+
+        // Atualiza a tabela de pedidos
+        updateOrderTable();
+        updateMesaTotal(mesaNumber);
+        
+        // Limpa os campos
+        document.getElementById('item-name').value = '';
+        document.getElementById('item-value').value = '';
+    } else {
+        alert('Por favor, preencha todos os campos corretamente.');
+    }
 }
 
-// Função para atualizar a tabela de pedidos
-function atualizarPedidos() {
-  const tabela = document.getElementById('tabela-pedidos').getElementsByTagName('tbody')[0];
-  tabela.innerHTML = '';
+function updateOrderTable() {
+    const tbody = document.querySelector('#orders tbody');
+    tbody.innerHTML = ''; // Limpa a tabela antes de atualizar
 
-  const pedidos = mesas[mesaSelecionada].pedidos;
-  pedidos.forEach((pedido, index) => {
-    const row = tabela.insertRow();
-    row.insertCell(0).innerText = pedido.nome;
-    row.insertCell(1).innerText = `R$ ${pedido.valor.toFixed(2)}`;
+    // Ordena os pedidos por mesa
+    const sortedOrders = orders.sort((a, b) => a.mesa - b.mesa);
 
-    // Botão de alterar
-    const btnAlterar = document.createElement('button');
-    btnAlterar.innerText = "Alterar";
-    btnAlterar.onclick = () => alterarPedido(index);
-    row.insertCell(2).appendChild(btnAlterar);
-
-    // Botão de excluir
-    const btnExcluir = document.createElement('button');
-    btnExcluir.innerText = "Excluir";
-    btnExcluir.onclick = () => excluirPedido(index);
-    row.insertCell(3).appendChild(btnExcluir);
-  });
-
-  document.getElementById('total-mesa').innerText = `Total: R$ ${mesas[mesaSelecionada].total.toFixed(2)}`;
+    sortedOrders.forEach((order, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${order.mesa}</td>
+            <td>${order.name}</td>
+            <td>R$ ${order.value.toFixed(2)}</td>
+            <td>
+                <button onclick="editOrder(${index})">Alterar</button>
+                <button onclick="deleteOrder(${index})">Excluir</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
 }
 
-// Função para alterar pedido
-function alterarPedido(index) {
-  const novoNome = prompt("Insira o novo nome do lanche:");
-  const novoValor = parseFloat(prompt("Insira o novo valor do lanche:"));
-
-  if (novoNome && !isNaN(novoValor)) {
-    mesas[mesaSelecionada].total -= mesas[mesaSelecionada].pedidos[index].valor;  // Subtrai o valor antigo
-    mesas[mesaSelecionada].pedidos[index] = { nome: novoNome, valor: novoValor };  // Atualiza o pedido
-    mesas[mesaSelecionada].total += novoValor;  // Adiciona o novo valor
-    atualizarPedidos();
-  } else {
-    alert("Preencha corretamente os novos dados.");
-  }
+function updateMesaTotal(mesaNumber) {
+    const mesaOrders = orders.filter(order => order.mesa == mesaNumber);
+    const totalValue = mesaOrders.reduce((sum, order) => sum + order.value, 0);
+    
+    // Exibe o valor total em algum lugar (você pode adicionar um elemento para isso)
+    console.log(`Total da Mesa ${mesaNumber}: R$ ${totalValue.toFixed(2)}`);
+    // Aqui você pode atualizar um elemento específico na página se desejar
 }
 
-// Função para excluir pedido
-function excluirPedido(index) {
-  const pedido = mesas[mesaSelecionada].pedidos[index];
-  mesas[mesaSelecionada].total -= pedido.valor; // Subtrai o valor do pedido
-  mesas[mesaSelecionada].pedidos.splice(index, 1); // Remove o pedido da lista
-  atualizarPedidos();
+function editOrder(index) {
+    const order = orders[index];
+    document.getElementById('mesa-select').value = order.mesa;
+    document.getElementById('item-name').value = order.name;
+    document.getElementById('item-value').value = order.value;
+    
+    // Remove o pedido original antes de adicionar a alteração
+    deleteOrder(index);
 }
 
-// Registro do Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registrado com sucesso:', registration);
-      })
-      .catch((error) => {
-        console.log('Falha ao registrar o Service Worker:', error);
-      });
-  });
+function deleteOrder(index) {
+    orders.splice(index, 1);
+    updateOrderTable();
+}
+
+// Função para exibir o total na interface
+function displayTotalForMesa() {
+    const mesaNumbers = [...new Set(orders.map(order => order.mesa))]; // Obtém números únicos das mesas
+    mesaNumbers.forEach(mesa => {
+        const mesaOrders = orders.filter(order => order.mesa == mesa);
+        const totalValue = mesaOrders.reduce((sum, order) => sum + order.value, 0);
+        console.log(`Total da Mesa ${mesa}: R$ ${totalValue.toFixed(2)}`);
+        // Aqui você pode adicionar código para atualizar a interface
+    });
 }
